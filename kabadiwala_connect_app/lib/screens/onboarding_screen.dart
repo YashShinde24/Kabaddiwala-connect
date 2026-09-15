@@ -139,7 +139,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       subtitleHi: 'Immediate UPI Cash',
                       description:
                           'Sell electronics, old appliances, metal, and household recyclables safely with verified fair digital weight.',
-                      icon: Icons.home_storage,
+                      icon: Icons.home,
                       iconBg: AppColors.primaryFixed,
                       iconColor: AppColors.primary,
                       accentColor: AppColors.primary,
