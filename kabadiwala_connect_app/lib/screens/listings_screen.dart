@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../app_colors.dart';
 import '../components/indicators_and_badges.dart';
 
-class MatchScreen extends StatefulWidget {
-  const MatchScreen({super.key});
+class SellerPickupScreen extends StatefulWidget {
+  const SellerPickupScreen({super.key});
 
   @override
-  State<MatchScreen> createState() => _MatchScreenState();
+  State<SellerPickupScreen> createState() => _SellerPickupScreenState();
 }
 
-class _MatchScreenState extends State<MatchScreen> {
+class _SellerPickupScreenState extends State<SellerPickupScreen> {
   int _tabIndex = 0;
 
   @override
@@ -27,9 +27,9 @@ class _MatchScreenState extends State<MatchScreen> {
                 children: [
                   Row(
                     children: const [
-                      Icon(Icons.handshake, color: AppColors.primary, size: 22),
+                      Icon(Icons.local_shipping, color: AppColors.primary, size: 22),
                       SizedBox(width: 8),
-                      Text('Match & Coordination',
+                      Text('My Pickups',
                           style: TextStyle(
                               fontFamily: 'Noto Sans',
                               fontSize: 20,
@@ -37,10 +37,10 @@ class _MatchScreenState extends State<MatchScreen> {
                               color: AppColors.onSurface)),
                     ],
                   ),
-                  const Text('पिकअप मिलान और समन्वय',
+                  const Text('Track your scrap pickup requests',
                       style: TextStyle(
                           fontFamily: 'Noto Sans',
-                          fontSize: 11,
+                          fontSize: 12,
                           color: AppColors.onSurfaceVariant)),
                   const SizedBox(height: 12),
                   // Tab toggle
@@ -52,7 +52,7 @@ class _MatchScreenState extends State<MatchScreen> {
                     ),
                     child: Row(
                       children: [
-                        _Tab('Pending (3)', 0, _tabIndex, () => setState(() => _tabIndex = 0)),
+                        _Tab('Pending (1)', 0, _tabIndex, () => setState(() => _tabIndex = 0)),
                         _Tab('Active (1)', 1, _tabIndex, () => setState(() => _tabIndex = 1)),
                         _Tab('Completed', 2, _tabIndex, () => setState(() => _tabIndex = 2)),
                       ],
@@ -67,50 +67,34 @@ class _MatchScreenState extends State<MatchScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   if (_tabIndex == 0) ...[
-                    _PickupRequestCard(
-                      sellerName: 'Sunita Sharma',
-                      address: 'B-204, Mayur Vihar Phase 1',
+                    _SellerPendingCard(
+                      collectorName: 'Rajiv Green Collector',
                       category: 'E-Waste + Plastic',
                       weight: '~12 kg',
                       estimatedValue: '₹540',
-                      distanceKm: '0.8',
-                      status: 'Pending',
-                      onAccept: () {},
-                      onDecline: () {},
-                    ),
-                    const SizedBox(height: 12),
-                    _PickupRequestCard(
-                      sellerName: 'Ramesh Gupta',
-                      address: 'Flat 5A, Anand Vihar',
-                      category: 'Newspaper + Cardboard',
-                      weight: '~30 kg',
-                      estimatedValue: '₹420',
-                      distanceKm: '1.3',
-                      status: 'Pending',
-                      onAccept: () {},
-                      onDecline: () {},
-                    ),
-                    const SizedBox(height: 12),
-                    _PickupRequestCard(
-                      sellerName: 'Priya Mehra',
-                      address: '12, Laxmi Nagar Market',
-                      category: 'Iron Scrap + Metal',
-                      weight: '~25 kg',
-                      estimatedValue: '₹1,125',
-                      distanceKm: '2.1',
-                      status: 'Pending',
-                      onAccept: () {},
-                      onDecline: () {},
+                      eta: '25 min',
+                      onCancel: () {},
                     ),
                   ] else if (_tabIndex == 1) ...[
-                    _ActivePickupCard(),
+                    _SellerActiveCard(),
                   ] else ...[
-                    _CompletedPickupCard(
-                        name: 'Asha Devi', date: 'Today, 10:30 AM', amount: '₹780'),
+                    _SellerCompletedCard(
+                      collectorName: 'Mahesh Kabadiwala',
+                      category: 'Newspaper + Metal',
+                      date: 'Today, 10:30 AM',
+                      paidAmount: '₹780',
+                      kg: '20 kg',
+                    ),
                     const SizedBox(height: 10),
-                    _CompletedPickupCard(
-                        name: 'Mahesh Kumar', date: 'Yesterday, 3:45 PM', amount: '₹420'),
+                    _SellerCompletedCard(
+                      collectorName: 'Rajiv Green Collector',
+                      category: 'E-Waste',
+                      date: 'Yesterday, 3:45 PM',
+                      paidAmount: '₹420',
+                      kg: '8 kg',
+                    ),
                   ],
+                  const SizedBox(height: 24),
                 ],
               ),
             ),
@@ -157,20 +141,17 @@ class _Tab extends StatelessWidget {
   }
 }
 
-class _PickupRequestCard extends StatelessWidget {
-  final String sellerName, address, category, weight, estimatedValue, distanceKm, status;
-  final VoidCallback onAccept, onDecline;
+class _SellerPendingCard extends StatelessWidget {
+  final String collectorName, category, weight, estimatedValue, eta;
+  final VoidCallback onCancel;
 
-  const _PickupRequestCard({
-    required this.sellerName,
-    required this.address,
+  const _SellerPendingCard({
+    required this.collectorName,
     required this.category,
     required this.weight,
     required this.estimatedValue,
-    required this.distanceKm,
-    required this.status,
-    required this.onAccept,
-    required this.onDecline,
+    required this.eta,
+    required this.onCancel,
   });
 
   @override
@@ -191,11 +172,11 @@ class _PickupRequestCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFFBEB),
+                  color: AppColors.statusOfflineBg,
                   borderRadius: BorderRadius.circular(999),
                   border: Border.all(color: const Color(0xFFFDE68A)),
                 ),
-                child: const Text('⏳ Awaiting Response',
+                child: const Text('⏳ Awaiting Collector',
                     style: TextStyle(
                         fontFamily: 'Noto Sans',
                         fontSize: 10,
@@ -203,9 +184,9 @@ class _PickupRequestCard extends StatelessWidget {
                         color: Color(0xFF92400E))),
               ),
               const Spacer(),
-              Icon(Icons.near_me, size: 13, color: AppColors.secondary),
+              const Icon(Icons.timer, size: 13, color: AppColors.secondary),
               const SizedBox(width: 3),
-              Text('$distanceKm km',
+              Text('ETA: $eta',
                   style: const TextStyle(
                       fontFamily: 'Noto Sans',
                       fontSize: 12,
@@ -214,27 +195,10 @@ class _PickupRequestCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          Text(sellerName,
+          Text(collectorName,
               style: const TextStyle(
-                  fontFamily: 'Noto Sans',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.onSurface)),
-          const SizedBox(height: 2),
-          Row(
-            children: [
-              const Icon(Icons.location_on, size: 13, color: AppColors.onSurfaceVariant),
-              const SizedBox(width: 4),
-              Expanded(
-                child: Text(address,
-                    style: const TextStyle(
-                        fontFamily: 'Noto Sans',
-                        fontSize: 12,
-                        color: AppColors.onSurfaceVariant)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
+                  fontFamily: 'Noto Sans', fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.onSurface)),
+          const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -248,74 +212,36 @@ class _PickupRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(category,
-                        style: const TextStyle(
-                            fontFamily: 'Noto Sans',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.onSurface)),
+                        style: const TextStyle(fontFamily: 'Noto Sans', fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.onSurface)),
                     Text(weight,
-                        style: const TextStyle(
-                            fontFamily: 'Noto Sans',
-                            fontSize: 12,
-                            color: AppColors.onSurfaceVariant)),
+                        style: const TextStyle(fontFamily: 'Noto Sans', fontSize: 12, color: AppColors.onSurfaceVariant)),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const Text('Est. Value',
-                        style: TextStyle(
-                            fontFamily: 'Noto Sans',
-                            fontSize: 11,
-                            color: AppColors.onSurfaceVariant)),
+                        style: TextStyle(fontFamily: 'Noto Sans', fontSize: 11, color: AppColors.onSurfaceVariant)),
                     Text(estimatedValue,
-                        style: const TextStyle(
-                            fontFamily: 'Noto Sans',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary)),
+                        style: const TextStyle(fontFamily: 'Noto Sans', fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.primary)),
                   ],
                 ),
               ],
             ),
           ),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 44,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.error,
-                      side: const BorderSide(color: AppColors.error),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    onPressed: onDecline,
-                    child: const Text('Decline / नकारें',
-                        style: TextStyle(fontFamily: 'Noto Sans', fontSize: 13, fontWeight: FontWeight.w600)),
-                  ),
-                ),
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.error,
+                side: const BorderSide(color: AppColors.error),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                flex: 2,
-                child: SizedBox(
-                  height: 44,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    onPressed: onAccept,
-                    child: const Text('Accept Pickup / स्वीकार करें',
-                        style: TextStyle(fontFamily: 'Noto Sans', fontSize: 13, fontWeight: FontWeight.w700)),
-                  ),
-                ),
-              ),
-            ],
+              onPressed: onCancel,
+              child: const Text('Cancel Request', style: TextStyle(fontFamily: 'Noto Sans', fontSize: 13, fontWeight: FontWeight.w600)),
+            ),
           ),
         ],
       ),
@@ -323,7 +249,7 @@ class _PickupRequestCard extends StatelessWidget {
   }
 }
 
-class _ActivePickupCard extends StatelessWidget {
+class _SellerActiveCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -336,88 +262,66 @@ class _ActivePickupCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.statusOnlineBg,
-                  borderRadius: BorderRadius.circular(999),
-                  border: Border.all(color: const Color(0xFFA7F3D0)),
-                ),
-                child: const Text('🟢 En Route • रास्ते में',
-                    style: TextStyle(
-                        fontFamily: 'Noto Sans',
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF065F46))),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          const Text('Sunita Sharma',
-              style: TextStyle(
-                  fontFamily: 'Noto Sans',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.onSurface)),
-          const Text('B-204, Mayur Vihar Phase 1',
-              style: TextStyle(
-                  fontFamily: 'Noto Sans', fontSize: 13, color: AppColors.onSurfaceVariant)),
-          const SizedBox(height: 12),
-          const Text('Enter Pickup OTP / OTP दर्ज करें',
-              style: TextStyle(
-                  fontFamily: 'Noto Sans',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.onSurface)),
-          const SizedBox(height: 8),
           Container(
-            height: 52,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.surfaceContainerLow,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.primary, width: 2),
+              color: AppColors.statusOnlineBg,
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(color: const Color(0xFFA7F3D0)),
             ),
-            child: const TextField(
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: '• • • • • •',
-                border: InputBorder.none,
-              ),
-              style: TextStyle(
-                  fontFamily: 'Noto Sans',
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 10),
+            child: const Text('🟢 Collector En Route',
+                style: TextStyle(
+                    fontFamily: 'Noto Sans',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF065F46))),
+          ),
+          const SizedBox(height: 12),
+          const Text('Rajiv Green Collector',
+              style: TextStyle(fontFamily: 'Noto Sans', fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.onSurface)),
+          const Text('Arriving in ~25 minutes',
+              style: TextStyle(fontFamily: 'Noto Sans', fontSize: 13, color: AppColors.onSurfaceVariant)),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.primaryFixed.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.qr_code, color: AppColors.primary, size: 20),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Your Pickup OTP', style: TextStyle(fontFamily: 'Noto Sans', fontSize: 11, color: AppColors.onSurfaceVariant)),
+                      Text('7 4 8 2 1 6', style: TextStyle(fontFamily: 'Noto Sans', fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.primary, letterSpacing: 6)),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              onPressed: () {},
-              child: const Text('Verify & Proceed to Weighing',
-                  style: TextStyle(fontFamily: 'Noto Sans', fontSize: 14, fontWeight: FontWeight.w700)),
-            ),
-          ),
+          const Text('Share this OTP with the collector at the time of handover.',
+              style: TextStyle(fontFamily: 'Noto Sans', fontSize: 12, color: AppColors.onSurfaceVariant)),
         ],
       ),
     );
   }
 }
 
-class _CompletedPickupCard extends StatelessWidget {
-  final String name, date, amount;
-  const _CompletedPickupCard({required this.name, required this.date, required this.amount});
+class _SellerCompletedCard extends StatelessWidget {
+  final String collectorName, category, date, paidAmount, kg;
+  const _SellerCompletedCard({
+    required this.collectorName,
+    required this.category,
+    required this.date,
+    required this.paidAmount,
+    required this.kg,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -431,12 +335,8 @@ class _CompletedPickupCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.statusOnlineBg,
-              shape: BoxShape.circle,
-            ),
+            width: 44, height: 44,
+            decoration: const BoxDecoration(color: AppColors.statusOnlineBg, shape: BoxShape.circle),
             child: const Icon(Icons.check_circle, color: AppColors.statusOnline, size: 24),
           ),
           const SizedBox(width: 12),
@@ -444,24 +344,22 @@ class _CompletedPickupCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name,
-                    style: const TextStyle(
-                        fontFamily: 'Noto Sans',
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.onSurface)),
-                Text(date,
-                    style: const TextStyle(
-                        fontFamily: 'Noto Sans', fontSize: 12, color: AppColors.onSurfaceVariant)),
+                Text(collectorName,
+                    style: const TextStyle(fontFamily: 'Noto Sans', fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.onSurface)),
+                Text('$category · $kg',
+                    style: const TextStyle(fontFamily: 'Noto Sans', fontSize: 12, color: AppColors.onSurfaceVariant)),
+                Text(date, style: const TextStyle(fontFamily: 'Noto Sans', fontSize: 11, color: AppColors.onSurfaceVariant)),
               ],
             ),
           ),
-          Text(amount,
-              style: const TextStyle(
-                  fontFamily: 'Noto Sans',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary)),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(paidAmount,
+                  style: const TextStyle(fontFamily: 'Noto Sans', fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.primary)),
+              const Text('Paid via UPI', style: TextStyle(fontFamily: 'Noto Sans', fontSize: 10, color: AppColors.statusOnline, fontWeight: FontWeight.w600)),
+            ],
+          ),
         ],
       ),
     );

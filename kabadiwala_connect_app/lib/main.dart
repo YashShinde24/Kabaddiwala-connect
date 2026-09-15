@@ -8,6 +8,8 @@ import 'screens/home_screen.dart';
 import 'screens/listings_screen.dart';
 import 'screens/price_trends_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/collector_dashboard.dart';
+import 'screens/recycler_dashboard.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,31 +69,55 @@ class AppEntry extends StatefulWidget {
 
 class _AppEntryState extends State<AppEntry> {
   bool _onboarded = false;
+  int _userRole = 0; // 0=Seller, 1=Collector, 2=Recycler
 
   @override
   Widget build(BuildContext context) {
     if (!_onboarded) {
-      return OnboardingScreen(onContinue: () => setState(() => _onboarded = true));
+      return OnboardingScreen(
+        onContinue: (int role) => setState(() {
+          _userRole = role;
+          _onboarded = true;
+        }),
+      );
     }
-    return const MainShell();
+    // Route to role-specific dashboard
+    switch (_userRole) {
+      case 1:
+        return const CollectorDashboard();
+      case 2:
+        return const RecyclerDashboard();
+      default:
+        return const SellerShell();
+    }
   }
 }
 
-class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+// ─────────────────────────────────────────────
+// Seller Shell (role 0)
+// ─────────────────────────────────────────────
+class SellerShell extends StatefulWidget {
+  const SellerShell({super.key});
 
   @override
-  State<MainShell> createState() => _MainShellState();
+  State<SellerShell> createState() => _SellerShellState();
 }
 
-class _MainShellState extends State<MainShell> {
+class _SellerShellState extends State<SellerShell> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = const [
-    HomeScreen(),
-    MatchScreen(),
+    SellerHomeScreen(),
+    SellerPickupScreen(),
     PriceTrendsScreen(),
     ProfileScreen(),
+  ];
+
+  static const _items = [
+    _NavItem(Icons.home_outlined, Icons.home, 'Home'),
+    _NavItem(Icons.local_shipping_outlined, Icons.local_shipping, 'Pickups'),
+    _NavItem(Icons.trending_up_outlined, Icons.trending_up, 'Prices'),
+    _NavItem(Icons.person_outline, Icons.person, 'Profile'),
   ];
 
   @override
@@ -99,29 +125,25 @@ class _MainShellState extends State<MainShell> {
     return Scaffold(
       backgroundColor: AppColors.surface,
       body: IndexedStack(index: _currentIndex, children: _screens),
-      bottomNavigationBar: _KabadiwalaBottomNav(
+      bottomNavigationBar: _SellerBottomNav(
         currentIndex: _currentIndex,
+        items: _items,
         onTap: (i) => setState(() => _currentIndex = i),
       ),
     );
   }
 }
 
-class _KabadiwalaBottomNav extends StatelessWidget {
+class _SellerBottomNav extends StatelessWidget {
   final int currentIndex;
+  final List<_NavItem> items;
   final ValueChanged<int> onTap;
 
-  const _KabadiwalaBottomNav({
+  const _SellerBottomNav({
     required this.currentIndex,
+    required this.items,
     required this.onTap,
   });
-
-  static const _items = [
-    _NavItem(Icons.home_outlined, Icons.home, 'होम', 'Home'),
-    _NavItem(Icons.handshake_outlined, Icons.handshake, 'पिकअप', 'Match'),
-    _NavItem(Icons.trending_up_outlined, Icons.trending_up, 'बाजार भाव', 'Prices'),
-    _NavItem(Icons.person_outline, Icons.person, 'प्रोफाइल', 'Profile'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +156,7 @@ class _KabadiwalaBottomNav extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(_items.length, (i) {
+        children: List.generate(items.length, (i) {
           final active = i == currentIndex;
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -147,21 +169,20 @@ class _KabadiwalaBottomNav extends StatelessWidget {
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
                     child: Icon(
-                      active ? _items[i].activeIcon : _items[i].icon,
+                      active ? items[i].activeIcon : items[i].icon,
                       key: ValueKey(active),
                       color: active ? AppColors.primary : AppColors.onSurfaceVariant,
                       size: 26,
                     ),
                   ),
                   const SizedBox(height: 3),
-                  Text(_items[i].labelHi,
+                  Text(items[i].label,
                       style: TextStyle(
                           fontFamily: 'Noto Sans',
                           fontSize: 10,
                           fontWeight: active ? FontWeight.w700 : FontWeight.w400,
                           color: active ? AppColors.primary : AppColors.onSurfaceVariant)),
                   const SizedBox(height: 3),
-                  // Amber accent dot under active tab
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     width: active ? 6 : 0,
@@ -183,6 +204,6 @@ class _KabadiwalaBottomNav extends StatelessWidget {
 
 class _NavItem {
   final IconData icon, activeIcon;
-  final String labelHi, labelEn;
-  const _NavItem(this.icon, this.activeIcon, this.labelHi, this.labelEn);
+  final String label;
+  const _NavItem(this.icon, this.activeIcon, this.label);
 }

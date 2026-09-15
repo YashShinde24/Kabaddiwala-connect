@@ -15,16 +15,16 @@ class _PriceTrendsScreenState extends State<PriceTrendsScreen> {
   final _searchController = TextEditingController();
 
   final _items = const [
-    _PriceData('E-Waste Motherboard', 'मदरबोर्ड', Icons.memory, '₹320/kg', '+₹15 today', true),
-    _PriceData('Copper Wire', 'तांबे का तार', Icons.cable, '₹550/kg', '+₹22 today', true),
-    _PriceData('Aluminium', 'एल्युमीनियम', Icons.view_module, '₹120/kg', '+₹5 today', true),
-    _PriceData('Iron / Steel', 'लोहा / स्टील', Icons.hardware, '₹45/kg', '-₹2 today', false),
-    _PriceData('Newspaper', 'अखबार', Icons.newspaper, '₹15/kg', '-₹1 today', false),
-    _PriceData('Cardboard', 'गत्ता', Icons.inventory_2, '₹12/kg', '0 today', true),
-    _PriceData('Plastic Bottles', 'प्लास्टिक बोतलें', Icons.local_drink, '₹20/kg', '+₹1 today', true),
-    _PriceData('Hard Plastic', 'कठोर प्लास्टिक', Icons.format_shapes, '₹18/kg', '0 today', true),
-    _PriceData('Glass Bottles', 'कांच की बोतलें', Icons.wine_bar, '₹5/kg', '-₹1 today', false),
-    _PriceData('CRT Monitor', 'पुरानी स्क्रीन', Icons.monitor, '₹80/kg', '+₹10 today', true),
+    _PriceData('E-Waste Motherboard', Icons.memory, '₹320/kg', '+₹15 today', true),
+    _PriceData('Copper Wire', Icons.cable, '₹550/kg', '+₹22 today', true),
+    _PriceData('Aluminium', Icons.view_module, '₹120/kg', '+₹5 today', true),
+    _PriceData('Iron / Steel', Icons.hardware, '₹45/kg', '-₹2 today', false),
+    _PriceData('Newspaper', Icons.newspaper, '₹15/kg', '-₹1 today', false),
+    _PriceData('Cardboard', Icons.inventory_2, '₹12/kg', '0 today', true),
+    _PriceData('Plastic Bottles', Icons.local_drink, '₹20/kg', '+₹1 today', true),
+    _PriceData('Hard Plastic', Icons.format_shapes, '₹18/kg', '0 today', true),
+    _PriceData('Glass Bottles', Icons.wine_bar, '₹5/kg', '-₹1 today', false),
+    _PriceData('CRT Monitor', Icons.monitor, '₹80/kg', '+₹10 today', true),
   ];
 
   @override
@@ -44,26 +44,16 @@ class _PriceTrendsScreenState extends State<PriceTrendsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const Row(
                         children: [
-                          Row(
-                            children: [
-                              Icon(Icons.trending_up, color: AppColors.secondary, size: 22),
-                              SizedBox(width: 6),
-                              Text('Live Market Rates',
-                                  style: TextStyle(
-                                      fontFamily: 'Noto Sans',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.onSurface)),
-                            ],
-                          ),
-                          Text('बाजार भाव • आज की दरें',
+                          Icon(Icons.trending_up, color: AppColors.secondary, size: 22),
+                          SizedBox(width: 6),
+                          Text('Live Market Rates',
                               style: TextStyle(
                                   fontFamily: 'Noto Sans',
-                                  fontSize: 11,
-                                  color: AppColors.onSurfaceVariant)),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.onSurface)),
                         ],
                       ),
                       Container(
@@ -161,15 +151,14 @@ class _PriceTrendsScreenState extends State<PriceTrendsScreen> {
                   Row(
                     children: [
                       Container(
-                        width: 6,
-                        height: 6,
+                        width: 6, height: 6,
                         decoration: const BoxDecoration(
                           color: AppColors.statusOnline,
                           shape: BoxShape.circle,
                         ),
                       ),
                       const SizedBox(width: 6),
-                      const Text('Rates updated 2 min ago • दर 2 मिनट पहले अपडेट हुई',
+                      const Text('Rates updated 2 min ago',
                           style: TextStyle(
                               fontFamily: 'Noto Sans',
                               fontSize: 11,
@@ -188,7 +177,6 @@ class _PriceTrendsScreenState extends State<PriceTrendsScreen> {
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (context, i) => PriceItemCard(
                   nameEn: _items[i].nameEn,
-                  nameHi: _items[i].nameHi,
                   icon: _items[i].icon,
                   price: _items[i].price,
                   delta: _items[i].delta,
@@ -204,9 +192,8 @@ class _PriceTrendsScreenState extends State<PriceTrendsScreen> {
 }
 
 class _PriceData {
-  final String nameEn, nameHi, price, delta;
+  final String nameEn, price, delta;
   final IconData icon;
   final bool isPositive;
-  const _PriceData(
-      this.nameEn, this.nameHi, this.icon, this.price, this.delta, this.isPositive);
+  const _PriceData(this.nameEn, this.icon, this.price, this.delta, this.isPositive);
 }

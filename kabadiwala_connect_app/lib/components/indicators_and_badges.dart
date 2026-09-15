@@ -36,7 +36,7 @@ class _ConnectivityIndicatorState extends State<ConnectivityIndicator>
   @override
   Widget build(BuildContext context) {
     final color = widget.isOnline ? AppColors.primary : AppColors.statusOffline;
-    final label = widget.isOnline ? 'सिंक सक्रिय • Online' : 'ऑफ़लाइन • Offline';
+    final label = widget.isOnline ? 'Online' : 'Offline';
 
     return Container(
       height: 28,

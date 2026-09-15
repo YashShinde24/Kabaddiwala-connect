@@ -3,14 +3,14 @@ import '../app_colors.dart';
 import '../components/collector_card.dart';
 import '../components/indicators_and_badges.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class SellerHomeScreen extends StatefulWidget {
+  const SellerHomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SellerHomeScreen> createState() => _SellerHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SellerHomeScreenState extends State<SellerHomeScreen> {
   bool _isPhotoMode = true;
 
   @override
@@ -64,21 +64,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 8),
                           const Row(
                             children: [
-                              Text('Namaste, Sunita!',
+                              Text('Good morning, Sunita!',
                                   style: TextStyle(
                                       fontFamily: 'Noto Sans',
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.onSurface)),
                               SizedBox(width: 6),
-                              Text('🙏', style: TextStyle(fontSize: 20)),
+                              Text('👋', style: TextStyle(fontSize: 20)),
                             ],
                           ),
                           const Text(
-                            'नमस्ते सुनिता शर्मा • Sell scrap with fair market pricing today',
+                            'Sell scrap with fair market pricing today',
                             style: TextStyle(
                                 fontFamily: 'Noto Sans',
-                                fontSize: 12,
+                                fontSize: 13,
                                 color: AppColors.onSurfaceVariant),
                           ),
                         ],
@@ -100,32 +100,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Header + Mode switcher
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // Header
+                            const Row(
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Row(
-                                      children: [
-                                        Icon(Icons.recycling, color: AppColors.secondary, size: 22),
-                                        SizedBox(width: 6),
-                                        Text('Add Scrap Item',
-                                            style: TextStyle(
-                                                fontFamily: 'Noto Sans',
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                color: AppColors.onSurface)),
-                                      ],
-                                    ),
-                                    Text('नया कबाड़ आइटम जोड़ें',
-                                        style: TextStyle(
-                                            fontFamily: 'Noto Sans',
-                                            fontSize: 11,
-                                            color: AppColors.onSurfaceVariant)),
-                                  ],
-                                ),
+                                Icon(Icons.recycling, color: AppColors.secondary, size: 22),
+                                SizedBox(width: 6),
+                                Text('Add Scrap Item',
+                                    style: TextStyle(
+                                        fontFamily: 'Noto Sans',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.onSurface)),
                               ],
                             ),
                             const SizedBox(height: 12),
@@ -139,13 +124,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Row(
                                 children: [
                                   _ModeTab(
-                                    label: 'Photo Mode (फोटो)',
+                                    label: 'Photo Mode',
                                     icon: Icons.photo_camera,
                                     isActive: _isPhotoMode,
                                     onTap: () => setState(() => _isPhotoMode = true),
                                   ),
                                   _ModeTab(
-                                    label: 'Voice Mode (बोलें)',
+                                    label: 'Voice Mode',
                                     icon: Icons.mic,
                                     isActive: !_isPhotoMode,
                                     onTap: () => setState(() => _isPhotoMode = false),
@@ -215,26 +200,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.local_shipping, size: 20, color: AppColors.primary),
-                                      SizedBox(width: 6),
-                                      Text('Nearby Verified Collectors',
-                                          style: TextStyle(
-                                              fontFamily: 'Noto Sans',
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.onSurface)),
-                                    ],
-                                  ),
-                                  Text('आसपास के सत्यापित कबाड़ीवाले',
+                              const Row(
+                                children: [
+                                  Icon(Icons.local_shipping, size: 20, color: AppColors.primary),
+                                  SizedBox(width: 6),
+                                  Text('Nearby Verified Collectors',
                                       style: TextStyle(
                                           fontFamily: 'Noto Sans',
-                                          fontSize: 11,
-                                          color: AppColors.onSurfaceVariant)),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.onSurface)),
                                 ],
                               ),
                               Container(
@@ -336,45 +311,13 @@ class _TopBar extends StatelessWidget {
                           color: AppColors.secondary)),
                 ],
               ),
-              Text('Home',
+              Text('Seller Dashboard',
                   style: TextStyle(
                       fontFamily: 'Noto Sans', fontSize: 11, color: AppColors.onSurfaceVariant)),
             ],
           ),
           const Spacer(),
           const ConnectivityIndicator(isOnline: true),
-          const SizedBox(width: 8),
-          // Language toggle compact
-          GestureDetector(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceContainer,
-                borderRadius: BorderRadius.circular(999),
-              ),
-              child: const Row(
-                children: [
-                  Text('EN',
-                      style: TextStyle(
-                          fontFamily: 'Noto Sans',
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary)),
-                  Text(' / ',
-                      style: TextStyle(
-                          fontFamily: 'Noto Sans',
-                          fontSize: 11,
-                          color: AppColors.outline)),
-                  Text('हिं',
-                      style: TextStyle(
-                          fontFamily: 'Noto Sans',
-                          fontSize: 11,
-                          color: AppColors.onSurfaceVariant)),
-                ],
-              ),
-            ),
-            onTap: () {},
-          ),
           const SizedBox(width: 8),
           CircleAvatar(
             radius: 18,
@@ -434,7 +377,7 @@ class _PhotoModeContent extends StatelessWidget {
                             color: Colors.white, strokeWidth: 2),
                       ),
                       SizedBox(width: 6),
-                      Text('AI Vision Detected',
+                      Text('AI Vision Active',
                           style: TextStyle(
                               fontFamily: 'Noto Sans',
                               fontSize: 11,
@@ -490,10 +433,10 @@ class _PhotoModeContent extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Motherboard & High-grade PCB',
@@ -502,25 +445,21 @@ class _PhotoModeContent extends StatelessWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: AppColors.onSurface)),
-                      Text('कंप्यूटर मदरबोर्ड (Grade A)',
+                      Text('Computer Motherboard — Grade A',
                           style: TextStyle(
                               fontFamily: 'Noto Sans',
                               fontSize: 11,
                               color: AppColors.onSurfaceVariant)),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryFixed,
-                      borderRadius: BorderRadius.circular(999),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Chip(
+                      label: Text('Good / Reusable',
+                          style: TextStyle(fontFamily: 'Noto Sans', fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.onPrimaryFixedVariant)),
+                      backgroundColor: AppColors.primaryFixed,
+                      padding: EdgeInsets.zero,
                     ),
-                    child: const Text('Good / Reusable',
-                        style: TextStyle(
-                            fontFamily: 'Noto Sans',
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.onPrimaryFixedVariant)),
                   ),
                 ],
               ),
@@ -603,7 +542,7 @@ class _VoiceModeContent extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: AppColors.onSurface)),
-          const Text('बोलकर कबाड़ की लिस्ट बनाएं',
+          const Text('Describe your scrap items by voice',
               style: TextStyle(
                   fontFamily: 'Noto Sans',
                   fontSize: 11,
@@ -616,7 +555,7 @@ class _VoiceModeContent extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Text(
-              '"मेरे पास 5 पुराने पंखे और 2 लैपटॉप की बैटरी हैं"',
+              '"I have 5 old fans and 2 laptop batteries"',
               style: TextStyle(
                   fontFamily: 'Noto Sans',
                   fontSize: 13,

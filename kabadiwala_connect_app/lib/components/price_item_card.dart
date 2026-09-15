@@ -3,7 +3,6 @@ import '../app_colors.dart';
 
 class PriceItemCard extends StatelessWidget {
   final String nameEn;
-  final String nameHi;
   final IconData icon;
   final String price;
   final String delta;
@@ -12,7 +11,6 @@ class PriceItemCard extends StatelessWidget {
   const PriceItemCard({
     super.key,
     required this.nameEn,
-    required this.nameHi,
     required this.icon,
     required this.price,
     required this.delta,
@@ -53,11 +51,6 @@ class PriceItemCard extends StatelessWidget {
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: AppColors.onSurface)),
-                Text(nameHi,
-                    style: const TextStyle(
-                        fontFamily: 'Noto Sans',
-                        fontSize: 11,
-                        color: AppColors.onSurfaceVariant)),
               ],
             ),
           ),

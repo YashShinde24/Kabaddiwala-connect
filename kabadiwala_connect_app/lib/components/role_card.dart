@@ -4,9 +4,7 @@ import '../app_colors.dart';
 /// Role card used in the Onboarding screen
 class RoleCard extends StatelessWidget {
   final String titleEn;
-  final String titleHi;
   final String subtitleEn;
-  final String subtitleHi;
   final String description;
   final IconData icon;
   final Color iconBg;
@@ -20,9 +18,7 @@ class RoleCard extends StatelessWidget {
   const RoleCard({
     super.key,
     required this.titleEn,
-    required this.titleHi,
     required this.subtitleEn,
-    required this.subtitleHi,
     required this.description,
     required this.icon,
     required this.iconBg,
@@ -76,24 +72,12 @@ class RoleCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(titleEn,
-                                  style: const TextStyle(
-                                      fontFamily: 'Noto Sans',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.onSurface)),
-                              const SizedBox(width: 6),
-                              Text('($titleHi)',
-                                  style: TextStyle(
-                                      fontFamily: 'Noto Sans',
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: accentColor)),
-                            ],
-                          ),
+                          Text(titleEn,
+                              style: const TextStyle(
+                                  fontFamily: 'Noto Sans',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.onSurface)),
                           const SizedBox(height: 4),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -101,12 +85,12 @@ class RoleCard extends StatelessWidget {
                               color: iconBg,
                               borderRadius: BorderRadius.circular(999),
                             ),
-                            child: Text('$subtitleEn • $subtitleHi',
-                                style: const TextStyle(
+                            child: Text(subtitleEn,
+                                style: TextStyle(
                                     fontFamily: 'Noto Sans',
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.onPrimaryFixed)),
+                                    color: accentColor)),
                           ),
                         ],
                       ),
@@ -158,7 +142,7 @@ class RoleCard extends StatelessWidget {
                     children: [
                       Icon(Icons.star, color: Colors.white, size: 12),
                       SizedBox(width: 3),
-                      Text('MOST POPULAR • सबसे लोकप्रिय',
+                      Text('MOST POPULAR',
                           style: TextStyle(
                               fontFamily: 'Noto Sans',
                               fontSize: 10,
@@ -213,7 +197,7 @@ class _BenefitChip extends StatelessWidget {
 // Expose _Benefit for use in screens
 List<_Benefit> sellerBenefits() => [
       _Benefit(Icons.door_front_door, 'Free doorstep evaluation', AppColors.primary),
-      _Benefit(Icons.price_change, 'Daily Rate Card (पारदर्शी दरें)', AppColors.secondary),
+      _Benefit(Icons.price_change, 'Daily transparent rate card', AppColors.secondary),
       _Benefit(Icons.photo_camera, '1-Tap Photo Listing', AppColors.primary),
     ];
 

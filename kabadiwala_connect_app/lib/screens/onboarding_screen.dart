@@ -5,7 +5,7 @@ import '../components/indicators_and_badges.dart';
 import '../components/role_card.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  final VoidCallback onContinue;
+  final void Function(int role) onContinue;
   const OnboardingScreen({super.key, required this.onContinue});
 
   @override
@@ -13,7 +13,7 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  int _selectedRole = 1; // default: Collector
+  int _selectedRole = 0;
   final _phoneController = TextEditingController();
   bool _otpSent = false;
   bool _isLoading = false;
@@ -56,7 +56,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
                     ConnectivityIndicator(isOnline: true),
-                    LanguageToggle(),
                   ],
                 ),
               ),
@@ -92,14 +91,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     const Text('Turn scrap into fair value',
                         style: TextStyle(
                             fontFamily: 'Noto Sans',
-                            fontSize: 20,
+                            fontSize: 22,
                             fontWeight: FontWeight.w700,
                             color: AppColors.onSurface)),
-                    const Text('रद्दी और ई-कचरे का सही दाम',
+                    const Text('Connecting households, collectors & recyclers',
                         style: TextStyle(
                             fontFamily: 'Noto Sans',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
                             color: AppColors.onSurfaceVariant)),
                     const SizedBox(height: 10),
                     Container(
@@ -112,10 +110,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         children: const [
                           Icon(Icons.badge, color: AppColors.secondary, size: 20),
                           SizedBox(width: 8),
-                          Text('Select your role to continue • अपनी भूमिका चुनें',
+                          Text('Select your role to get started',
                               style: TextStyle(
                                   fontFamily: 'Noto Sans',
-                                  fontSize: 12,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.onSurface)),
                         ],
@@ -134,11 +132,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   children: [
                     RoleCard(
                       titleEn: 'Seller / Household',
-                      titleHi: 'विक्रेता / घर',
-                      subtitleEn: 'Quick Pickup',
-                      subtitleHi: 'Immediate UPI Cash',
+                      subtitleEn: 'Quick Pickup · Instant UPI',
                       description:
-                          'Sell electronics, old appliances, metal, and household recyclables safely with verified fair digital weight.',
+                          'Sell electronics, old appliances, metal, and household recyclables safely with AI-assisted listing and verified fair pricing.',
                       icon: Icons.home,
                       iconBg: AppColors.primaryFixed,
                       iconColor: AppColors.primary,
@@ -150,11 +146,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     const SizedBox(height: 20),
                     RoleCard(
                       titleEn: 'Collector / Kabadiwala',
-                      titleHi: 'कलेक्टर / कबाड़ी',
-                      subtitleEn: 'Higher Margins',
-                      subtitleHi: 'Route Optimization',
+                      subtitleEn: 'Higher Margins · Route Optimization',
                       description:
-                          'Receive area-wise pickup requests, access digital Bluetooth weighing slips, and sell bulk streams to certified plants.',
+                          'Receive area-wise pickup requests, access digital Bluetooth weighing slips, and sell bulk streams to certified recyclers.',
                       icon: Icons.electric_rickshaw,
                       iconBg: AppColors.secondaryFixed,
                       iconColor: AppColors.onSecondaryFixed,
@@ -167,9 +161,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     const SizedBox(height: 20),
                     RoleCard(
                       titleEn: 'Recycler / Facility',
-                      titleHi: 'अधिकृत रीसाइक्लर',
-                      subtitleEn: 'CPCB EPR Verified',
-                      subtitleHi: 'GST Invoicing',
+                      subtitleEn: 'CPCB EPR Verified · GST Invoicing',
                       description:
                           'Procure high-tonnage segregated plastic, metal, and certified e-waste with statutory traceability documentation.',
                       icon: Icons.factory,
@@ -204,10 +196,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
-                          Text('Mobile Number • मोबाइल नंबर',
+                          Text('Mobile Number',
                               style: TextStyle(
                                   fontFamily: 'Noto Sans',
-                                  fontSize: 12,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.onSurface)),
                           Row(
@@ -276,10 +268,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       const SizedBox(height: 12),
                       if (_otpSent) ...[
-                        const Text('Enter OTP / OTP दर्ज करें',
+                        const Text('Enter OTP',
                             style: TextStyle(
                                 fontFamily: 'Noto Sans',
-                                fontSize: 12,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.onSurface)),
                         const SizedBox(height: 8),
@@ -320,7 +312,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                           onPressed: _isLoading
                               ? null
-                              : (_otpSent ? widget.onContinue : _sendOtp),
+                              : (_otpSent ? () => widget.onContinue(_selectedRole) : _sendOtp),
                           child: _isLoading
                               ? const SizedBox(
                                   width: 22,
@@ -329,9 +321,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                       color: Colors.white, strokeWidth: 2.5),
                                 )
                               : Text(
-                                  _otpSent
-                                      ? 'Verify & Continue →'
-                                      : 'Get OTP • OTP प्राप्त करें',
+                                  _otpSent ? 'Verify & Continue →' : 'Get OTP',
                                   style: const TextStyle(
                                       fontFamily: 'Noto Sans',
                                       fontSize: 16,

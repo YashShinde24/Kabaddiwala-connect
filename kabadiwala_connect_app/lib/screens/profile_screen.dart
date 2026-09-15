@@ -16,7 +16,7 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ── Header
-              const Text('Profile / प्रोफाइल',
+              const Text('Profile',
                   style: TextStyle(
                       fontFamily: 'Noto Sans',
                       fontSize: 22,
@@ -45,10 +45,10 @@ class ProfileScreen extends StatelessWidget {
                               color: AppColors.primary)),
                     ),
                     const SizedBox(width: 14),
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text('Sunita Sharma',
                               style: TextStyle(
                                   fontFamily: 'Noto Sans',
@@ -60,7 +60,12 @@ class ProfileScreen extends StatelessWidget {
                                   fontFamily: 'Noto Sans',
                                   fontSize: 13,
                                   color: AppColors.onSurfaceVariant)),
-                          SizedBox(height: 6),
+                          SizedBox(height: 4),
+                          Text('Seller · Mayur Vihar, Delhi',
+                              style: TextStyle(
+                                  fontFamily: 'Noto Sans',
+                                  fontSize: 12,
+                                  color: AppColors.onSurfaceVariant)),
                         ],
                       ),
                     ),
@@ -73,19 +78,18 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Trust badges
+              // Trust badge
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 children: const [
                   TrustBadge(level: TrustLevel.verifiedCollector),
-                  TrustBadge(level: TrustLevel.cpcbAuthorized),
                 ],
               ),
               const SizedBox(height: 20),
 
               // Stats
-              const Text('Your Stats / आपके आँकड़े',
+              const Text('Your Stats',
                   style: TextStyle(
                       fontFamily: 'Noto Sans',
                       fontSize: 16,
@@ -94,17 +98,17 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Expanded(child: _StatCard('Total Sold', 'कुल बेचा', '145 kg', Icons.scale, AppColors.primary)),
+                  Expanded(child: _StatCard('Total Sold', '145 kg', Icons.scale, AppColors.primary)),
                   const SizedBox(width: 10),
-                  Expanded(child: _StatCard('Total Earned', 'कुल कमाई', '₹4,680', Icons.currency_rupee, AppColors.secondary)),
+                  Expanded(child: _StatCard('Total Earned', '₹4,680', Icons.currency_rupee, AppColors.secondary)),
                   const SizedBox(width: 10),
-                  Expanded(child: _StatCard('Pickups', 'पिकअप', '12', Icons.local_shipping, AppColors.tertiary)),
+                  Expanded(child: _StatCard('Pickups', '12', Icons.local_shipping, AppColors.tertiary)),
                 ],
               ),
               const SizedBox(height: 20),
 
               // Offline Sync
-              const Text('Sync Status / सिंक स्थिति',
+              const Text('Sync Status',
                   style: TextStyle(
                       fontFamily: 'Noto Sans',
                       fontSize: 16,
@@ -172,16 +176,16 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Settings
-              const Text('Settings / सेटिंग',
+              const Text('Settings',
                   style: TextStyle(
                       fontFamily: 'Noto Sans',
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: AppColors.onSurface)),
               const SizedBox(height: 10),
-              _SettingsTile(Icons.language, 'Language / भाषा', 'English'),
-              _SettingsTile(Icons.notifications_outlined, 'Notifications / सूचनाएं', 'Enabled'),
-              _SettingsTile(Icons.dark_mode_outlined, 'Theme / थीम', 'Light Mode'),
+              _SettingsTile(Icons.language, 'Language', 'English'),
+              _SettingsTile(Icons.notifications_outlined, 'Notifications', 'Enabled'),
+              _SettingsTile(Icons.dark_mode_outlined, 'Theme', 'Light Mode'),
               _SettingsTile(Icons.help_outline, 'Help & Support', ''),
               const SizedBox(height: 20),
               SizedBox(
@@ -194,7 +198,7 @@ class ProfileScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                   icon: const Icon(Icons.logout),
-                  label: const Text('Sign Out / साइन आउट',
+                  label: const Text('Sign Out',
                       style: TextStyle(
                           fontFamily: 'Noto Sans', fontSize: 14, fontWeight: FontWeight.w600)),
                   onPressed: () {},
@@ -210,10 +214,10 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class _StatCard extends StatelessWidget {
-  final String titleEn, titleHi, value;
+  final String title, value;
   final IconData icon;
   final Color color;
-  const _StatCard(this.titleEn, this.titleHi, this.value, this.icon, this.color);
+  const _StatCard(this.title, this.value, this.icon, this.color);
 
   @override
   Widget build(BuildContext context) {
@@ -234,13 +238,9 @@ class _StatCard extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: color)),
-          Text(titleEn,
+          Text(title,
               style: const TextStyle(
                   fontFamily: 'Noto Sans', fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.onSurface),
-              textAlign: TextAlign.center),
-          Text(titleHi,
-              style: const TextStyle(
-                  fontFamily: 'Noto Sans', fontSize: 10, color: AppColors.onSurfaceVariant),
               textAlign: TextAlign.center),
         ],
       ),
